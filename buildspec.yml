@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - echo "Ejecutando el análisis DAST..."
-      - docker run -e CX_APIKEY=$CX_APIKEY -v $CODEBUILD_SRC_DIR:/demo checkmarx/dast:latest web --environment-id=d8c28879-30b0-4b65-aa74-55a1ab0d4e21 --config=/demo/zap_config_web.yaml --base-url=https://us.ast.checkmarx.net/ --output=/demo/test_output --timeout=10000 --update-interval=10 --jvm-properties=-Xmx3G --log-level=info --verbose --retry=3 --retry-delay=20 --fail-on HIGH
+      - docker run -e CX_APIKEY=$CX_APIKEY -v $CODEBUILD_SRC_DIR:/demo checkmarx/dast:latest web --environment-id=d8c28879-30b0-4b65-aa74-55a1ab0d4e21 --config=$CODEBUILD_SRC_DIR/zap_config_web.yaml --base-url=https://us.ast.checkmarx.net/ --output=/demo/test_output --timeout=10000 --update-interval=10 --jvm-properties=-Xmx3G --log-level=info --verbose --retry=3 --retry-delay=20 --fail-on HIGH
 
 artifacts:
   files:
