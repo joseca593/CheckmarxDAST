@@ -12,7 +12,8 @@ phases:
   build:
     commands:
       - echo "Starting DAST scan on URL: $TARGET_URL"
-      - docker run -e CX_APIKEY=$CX_APIKEY \
+      - |
+        docker run -e CX_APIKEY=$CX_APIKEY \
         -v $CODEBUILD_SRC_DIR:/demo checkmarx/dast:latest \
         web \
         --environment-id=889259e2-c24b-4dc7-99f5-67009c43e73c \
