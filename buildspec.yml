@@ -2,8 +2,6 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      docker: 18
     commands:
       - echo "Instalando la imagen de Checkmarx DAST..."
       - docker pull checkmarx/dast:latest
