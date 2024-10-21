@@ -2,9 +2,32 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      docker: 19.03.12
     commands:
-      - wget -O ./cxcli.tar.gz "https://github.com/Checkmarx/ast-cli/releases/download/${CX_VERSION}/ast-cli_${CX_VERSION}_linux_x64.tar.gz"
-      - tar xzvf ./cxcli.tar.gz
+      - echo "Docker installation complete."
+      - echo "Pulling Checkmarx DAST Docker image..."
+      - docker pull checkmarx/dast:latest
+
   build:
     commands:
-      - ./cx scan create --project-name "exp-pnbxi-app202-user-data-channel-ms" --file-source "https://$GITHUB_TOKEN@github.com/joseca593/exp-pnbxi-app202-user-data-channel-ms" --branch "main" --report-format 'summaryHTML' --agent 'Github' --base-uri "$CX_BASE_URI" --tenant "$CX_TENANT" --client-id "$CX_CLIENT_ID" --client-secret "$CX_CLIENT_SECRET"
+      - echo "Starting DAST scan on URL: $TARGET_URL"
+      - docker run -e CX_APIKEY=$CX_APIKEY \
+        -v $CODEBUILD_SRC_DIR:/demo checkmarx/dast:latest \
+        web \
+        --environment-id=889259e2-c24b-4dc7-99f5-67009c43e73c \
+        --config=/demo/zap_config_web.yaml \
+        --base-url=$TARGET_URL \
+        --output=/demo/test_output \
+        --timeout=10000 \
+        --update-interval=10 \
+        --jvm-properties=-Xmx3G \
+        --log-level=info \
+        --verbose \
+        --retry=3 \
+        --retry-delay=20 \
+        --fail-on HIGH
+
+artifacts:
+  files:
+    - test_output/*
