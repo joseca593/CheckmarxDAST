@@ -11,21 +11,21 @@ phases:
   build:
     commands:
       - echo "Ejecutando el análisis DAST..."
-      - docker run -e CX_APIKEY=$CX_APIKEY \  # Usar la variable de entorno para la API Key
-          -v $CODEBUILD_SRC_DIR:/demo checkmarx/dast:latest \  # Montar el directorio de trabajo
-          web \  # Indicar que se realiza un análisis web
-          --environment-id=d8c28879-30b0-4b65-aa74-55a1ab0d4e21 \  # ID de entorno en Checkmarx
-          --config=/demo/zap_config_web.yaml \  # Ruta al archivo de configuración
-          --base-url=https://us.ast.checkmarx.net/ \  # URL del entorno de Checkmarx
-          --output=/demo/test_output \  # Ruta de salida para los resultados
-          --timeout=10000 \  # Timeout para la ejecución
-          --update-interval=10 \  # Intervalo de actualización
-          --jvm-properties=-Xmx3G \  # Configuraciones de JVM
-          --log-level=info \  # Nivel de registro
-          --verbose \  # Salida detallada
-          --retry=3 \  # Número de reintentos en caso de fallo
-          --retry-delay=20 \  # Retraso entre reintentos
-          --fail-on HIGH  # Fallar si se encuentra un problema crítico
+      - docker run -e CX_APIKEY=$API_MASTER_KEY \
+      -v $(pwd):/demo checkmarx/dast:latest \
+      web \
+      --environment-id=889259e2-c24b-4dc7-99f5-67009c43e73c \
+      --config=/demo/zap_config_web.yaml \
+      --base-url=https://urlCxOne.com/ \
+      --output=/demo/test_output \
+      --timeout=10000 \
+      --update-interval=10 \
+      --jvm-properties=-Xmx3G \
+      --log-level=info \
+      --verbose \
+      --retry=3 \
+      --retry-delay=20 \
+      --fail-on HIGH
 
 artifacts:
   files:
