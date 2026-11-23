@@ -1,15 +1,16 @@
 
-# Prueba de Mermaid
-
-## Arquitectura de autenticación
+# AWS - Arquitectura básica
 
 ```mermaid
-flowchart TD
-    A[Usuario] --> B[Aplicación móvil]
-    B --> C[API Gateway]
-    C --> D[Servicio de autenticación]
-    D --> E{Credenciales válidas?}
-    E -->|Sí| F[Generar token JWT]
-    E -->|No| G[Rechazar autenticación]
-    F --> H[Acceso autorizado]
+architecture-beta
+    group aws(cloud)[AWS Cloud]
+
+    service user(internet)[User]
+    service api(server)[API Gateway] in aws
+    service lambda(server)[Lambda] in aws
+    service db(database)[DynamoDB] in aws
+
+    user:R --> L:api
+    api:R --> L:lambda
+    lambda:R --> L:db
 ```
